@@ -1,4 +1,10 @@
 package com.example.repository;
+import com.example.entity.Message;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface MessageRepository {
+@Repository
+public interface MessageRepository extends JpaRepository<Message, Integer> {
+    //might need to add custom query methods here if needed here 
 }
+
