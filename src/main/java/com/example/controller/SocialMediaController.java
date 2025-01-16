@@ -59,21 +59,19 @@ import java.util.Optional;
      }
 
      @DeleteMapping("/{messageId}")
-     public ResponseEntity<?> deleteMessageById(@PathVariable("messageId") Integer messageId) {
-         // Check if the message exists
-         Optional<Message> message = messageRepository.findById(messageId);
+    public ResponseEntity<?> deleteMessageById(@PathVariable("messageId") Integer messageId) {
+        // Check if the message exists
+        Optional<Message> message = messageRepository.findById(messageId);
+
+        // If the message doesn't exist, return 200 with an empty body
+        if (message.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body("");
+        }
+
+        // If the message exists, delete it and return 200 with '1' as the response body
+        messageRepository.deleteById(messageId);
+        return ResponseEntity.status(HttpStatus.OK).body(1);
+    }
      
-         // If the message doesn't exist, return a 404 Not Found response
-         if (message.isEmpty()) {
-             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Message not found.");
-         }
-     
-         // Delete the message by ID
-         messageRepository.deleteById(messageId);
-     
-         // Return success response with 200 OK status
-         return ResponseEntity.status(HttpStatus.OK).body("Message deleted successfully.");
-     }
-     
- 
+
 }

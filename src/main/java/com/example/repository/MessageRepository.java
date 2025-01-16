@@ -9,9 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Integer> {
-
-@Modifying
-@Transactional
-@Query("DELETE FROM Message m WHERE m.messageId = :messageId")
-int deleteById(int messageId);  // Use 'int' instead of 'Integer' here
+    // dont add any custom query, its built in 
 }
