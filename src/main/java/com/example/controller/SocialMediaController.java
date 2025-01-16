@@ -81,7 +81,38 @@ import java.util.Optional;
         List<Message> messages = messageRepository.findByPostedBy(accountId);
         return ResponseEntity.ok(messages);
     }
+
+ @PatchMapping("/{messageId}")
+ public ResponseEntity<?> updateMessage(
+        @PathVariable Integer messageId,
+        @RequestBody Message updatedMessage) {
+    // Check if the message exists in the database
+    Optional<Message> existingMessageOpt = messageRepository.findById(messageId);
+    if (existingMessageOpt.isEmpty()) {
+        // Message not found
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Message not found.");
+    }
+
+    // Validate the updated message text is not null or empty
+    String newMessageText = updatedMessage.getMessageText();
+    if (newMessageText == null || newMessageText.trim().isEmpty()) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Message text cannot be empty.");
+    }
+
+    // Validate the updated message text length
+    if (newMessageText.length() > 255) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Message text cannot exceed 255 characters.");
+    }
+
+    // Perform the update
+    Message existingMessage = existingMessageOpt.get();
+    existingMessage.setMessageText(newMessageText);
+    messageRepository.save(existingMessage);
+
+    // Return success with number of rows updated (always 1 in this case)
+    return ResponseEntity.status(HttpStatus.OK).body(1);
+}
+
     
-     
 
 }
