@@ -8,6 +8,7 @@ import com.example.entity.Message;
 import com.example.repository.MessageRepository;
 import com.example.repository.AccountRepository;
 import com.example.entity.Account;
+import java.util.List;
 
 
 import java.util.Optional;
@@ -72,6 +73,15 @@ import java.util.Optional;
         messageRepository.deleteById(messageId);
         return ResponseEntity.status(HttpStatus.OK).body(1);
     }
+
+    // Retrieve all messages for a specific user
+    @GetMapping("/{accountId}/messages")
+    public ResponseEntity<List<Message>> getAllMessagesByUser(@PathVariable Integer accountId) {
+        // Fetch messages by user
+        List<Message> messages = messageRepository.findByPostedBy(accountId);
+        return ResponseEntity.ok(messages);
+    }
+    
      
 
 }

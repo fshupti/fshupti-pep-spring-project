@@ -6,8 +6,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Integer> {
-    // dont add any custom query, its built in 
+    List<Message> findByPostedBy(Integer postedBy);
+    List<Message> findByMessageTextContaining(String keyword);
 }
