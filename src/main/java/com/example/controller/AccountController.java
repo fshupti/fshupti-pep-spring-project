@@ -32,17 +32,13 @@ public class AccountController {
 
     // Retrieve all messages for a specific user
     @GetMapping("/{accountId}/messages")
-    public ResponseEntity<List<Message>> getAllMessagesByUser(@PathVariable Integer accountId) {
-        // Fetch messages posted by the user
-        List<Message> messages = messageRepository.findByPostedBy(accountId);
-        
-        if (messages.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(messages);
-        }
+public ResponseEntity<List<Message>> getAllMessagesByUser(@PathVariable Integer accountId) {
+    // Fetch messages posted by the user
+    List<Message> messages = messageRepository.findByPostedBy(accountId);
 
-        return ResponseEntity.ok(messages);
-    }
-
+    // Return a 200 OK with an empty list if no messages are found
+    return ResponseEntity.ok(messages);
+}
     // Login endpoint
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Account loginRequest) {
