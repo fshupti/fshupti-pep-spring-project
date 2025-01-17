@@ -27,6 +27,24 @@ public class MessageService {
     public List<Message> getMessagesByAccountId(int accountId) {
         return messageRepository.findByPostedBy(accountId);
     }
+
+    public int updateMessage(int messageId, String messageText) {
+        if (messageText == null || messageText.isEmpty()) {
+            throw new IllegalArgumentException("Message text cannot be empty.");
+        }
+
+        if (messageText.length() > 255) {
+            throw new IllegalArgumentException("Message text exceeds the maximum length of 255 characters.");
+        }
+
+        Message message = messageRepository.findById(messageId)
+                .orElseThrow(() -> new IllegalArgumentException("Message not found."));
+        
+        message.setMessageText(messageText);
+        messageRepository.save(message);
+
+        return 1; // One row updated
+    }
     
     
 }

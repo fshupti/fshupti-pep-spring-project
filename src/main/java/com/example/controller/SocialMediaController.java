@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.entity.Message;
 import com.example.repository.MessageRepository;
+import com.example.service.AccountService;
 import com.example.repository.AccountRepository;
 import com.example.entity.Account;
 import java.util.List;
+
 
 
 import java.util.Optional;
@@ -31,6 +33,11 @@ import java.util.Optional;
  
      @Autowired
      private AccountRepository accountRepository; // for user existence validation.
+
+     @Autowired
+     private AccountService accountService;
+
+
  
      @PostMapping
      public ResponseEntity<?> createMessage(@RequestBody Message message) {
@@ -113,6 +120,41 @@ import java.util.Optional;
     return ResponseEntity.status(HttpStatus.OK).body(1);
 }
 
-    
+@PostMapping("/login")
+public ResponseEntity<?> login(@RequestBody Account loginRequest) {
+    Optional<Account> account = accountService.login(loginRequest.getUsername(), loginRequest.getPassword());
+
+    if (account.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    return ResponseEntity.ok(account.get());
+}
+
+/**
+ * @PostMapping("/login")
+public ResponseEntity<?> login(@RequestBody Account loginRequest) {
+    // Validate input
+    if (loginRequest.getUsername() == null || loginRequest.getPassword() == null) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username and password are required.");
+    }
+
+    // Find the account by username
+    Optional<Account> account = accountRepository.findByUsername(loginRequest.getUsername());
+    if (account.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password.");
+    }
+
+    // Check if the password matches
+    if (!account.get().getPassword().equals(loginRequest.getPassword())) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password.");
+    }
+
+    // Return success response
+    return ResponseEntity.ok(account.get());
+}
+**/
+
+
 
 }

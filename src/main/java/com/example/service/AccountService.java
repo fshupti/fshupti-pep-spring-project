@@ -16,4 +16,16 @@ public class AccountService {
     public Optional<Account> findAccountById(Integer id) {
         return accountRepository.findById(id);
     }
+
+    public Optional<Account> login(String username, String password) {
+        Optional<Account> account = accountRepository.findByUsername(username);
+    
+        if (account.isPresent() && account.get().getPassword().equals(password)) {
+            return account;
+        } else {
+            return Optional.empty();
+        }
+    }
+    
+    
 }
