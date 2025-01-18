@@ -157,9 +157,10 @@ public ResponseEntity<?> login(@RequestBody Account loginRequest) {
 
 @GetMapping("/messages")
 public ResponseEntity<List<Message>> getAllMessages() {
-    List<Message> messages = messageRepository.findAll(); // Automatically provided by JpaRepository
+    List<Message> messages = messageRepository.findAll();
     return ResponseEntity.ok(messages);
 }
+
 
 @GetMapping("/{messageId}")
 public ResponseEntity<?> getMessageById(@PathVariable Integer messageId) {
