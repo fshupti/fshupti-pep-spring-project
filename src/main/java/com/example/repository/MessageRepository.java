@@ -12,4 +12,5 @@ import java.util.List;
 public interface MessageRepository extends JpaRepository<Message, Integer> {
     List<Message> findByPostedBy(Integer postedBy);
     List<Message> findByMessageTextContaining(String keyword);
+   // List<Message> findAll();
 }

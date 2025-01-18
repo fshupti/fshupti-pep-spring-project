@@ -120,7 +120,7 @@ import java.util.Optional;
     return ResponseEntity.status(HttpStatus.OK).body(1);
 }
 
-@PostMapping("/login")
+/** @PostMapping("/login")
 public ResponseEntity<?> login(@RequestBody Account loginRequest) {
     Optional<Account> account = accountService.login(loginRequest.getUsername(), loginRequest.getPassword());
 
@@ -130,7 +130,7 @@ public ResponseEntity<?> login(@RequestBody Account loginRequest) {
 
     return ResponseEntity.ok(account.get());
 }
-
+**/
 /**
  * @PostMapping("/login")
 public ResponseEntity<?> login(@RequestBody Account loginRequest) {
@@ -154,6 +154,21 @@ public ResponseEntity<?> login(@RequestBody Account loginRequest) {
     return ResponseEntity.ok(account.get());
 }
 **/
+
+@GetMapping("/messages")
+public ResponseEntity<List<Message>> getAllMessages() {
+    List<Message> messages = messageRepository.findAll(); // Automatically provided by JpaRepository
+    return ResponseEntity.ok(messages);
+}
+
+@GetMapping("/{messageId}")
+public ResponseEntity<?> getMessageById(@PathVariable Integer messageId) {
+    Optional<Message> message = messageRepository.findById(messageId);
+    if (message.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.OK).body(""); // Return empty body if message not found
+    }
+    return ResponseEntity.ok(message.get()); // Return the found message
+}
 
 
 
